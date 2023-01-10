@@ -1,0 +1,30 @@
+package com.arsal.drool.rule.engine;
+
+import com.arsal.drool.rule.engine.dto.Patient;
+import com.arsal.drool.rule.engine.dto.Diagnosis;
+import com.arsal.drool.rule.engine.dto.Temperature;
+import com.arsal.drool.rule.engine.service.RuleEngineService;
+
+dialect "mvel"
+
+rule "Fever diagnosis"
+    when
+        Patient(symptoms contains "fever")
+    then
+        RuleEngineService.printResult(new Diagnosis("Fever", 0.9, new Temperature(102)));
+end
+
+rule "Cough diagnosis"
+    when
+        Patient(symptoms contains "cough")
+    then
+        RuleEngineService.printResult(new Diagnosis("Cough", 0.8, new Temperature(99)));
+end
+
+rule "Cold diagnosis"
+    when
+        Patient(symptoms contains "sneezing")
+        Patient(symptoms contains "runny nose")
+    then
+        RuleEngineService.printResult(new Diagnosis("Cold", 0.7, new Temperature(101)));
+end
